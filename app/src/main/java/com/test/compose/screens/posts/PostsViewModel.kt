@@ -5,7 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
-class PostsViewModel(private val repo: PostsRepo) : ViewModel() {
+class PostsViewModel(private val repo: PostsRepo) : ViewModel(), PostsContract {
+
+    override fun initialState(): PostsContract.UiState {
+        return PostsContract.UiState()
+    }
+
     fun fetchPosts() {
         viewModelScope.launch {
             repo.fetchPosts()
