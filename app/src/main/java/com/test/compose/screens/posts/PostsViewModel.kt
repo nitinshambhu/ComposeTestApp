@@ -13,13 +13,11 @@ class PostsViewModel(private val repo: PostsRepo) : ViewModel(), PostsContract {
 
     fun fetchPosts() {
         viewModelScope.launch {
-            repo.fetchPosts()
-                .onSuccess {
-
-                }
-                .onFailure {
-                    Log.e("TINTIN", "Failed to fetch post", it)
-                }
+            val posts = repo.fetchPosts().getOrElse {
+                Log.e("TINTIN", "Failed to fetch post", it)
+                return@launch
+            }
+            updateUiState { copy(list = posts) }
         }
     }
 

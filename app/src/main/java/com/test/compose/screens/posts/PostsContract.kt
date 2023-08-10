@@ -5,7 +5,7 @@ import com.test.compose.common.ComposeContract
 interface PostsContract : ComposeContract<PostsContract.UiState, PostsContract.Effect> {
 
     data class UiState(
-        val list: List<Int> = emptyList()
+        val list: List<Post> = emptyList()
     )
 
     sealed class Effect {

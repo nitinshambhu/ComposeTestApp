@@ -20,7 +20,7 @@ interface ComposeContract<STATE, EFFECT> {
         _effect.emit(effect)
     }
 
-    fun postUiState(block: STATE.() -> STATE) {
+    fun updateUiState(block: STATE.() -> STATE) {
         _uiState.update {
             block(it)
         }
