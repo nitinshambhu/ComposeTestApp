@@ -3,32 +3,30 @@ package com.test.compose.common
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
-interface ComposeContract<STATE, EFFECT> {
+interface ComposePageContract<STATE, EFFECT> {
 
-    val _uiState: MutableStateFlow<STATE>
+    val _pageState: MutableStateFlow<PageState<STATE>>
+    var _uiState: STATE
 
     @Composable
-    fun collectUIState(): State<STATE> = _uiState.asStateFlow().collectAsState()
+    fun collectUIState(): State<PageState<STATE>> = _pageState.asStateFlow().collectAsState()
 
-    fun initialState(): STATE
-
-    fun updateUiState(block: STATE.() -> STATE) {
-        _uiState.update {
-            block(it)
+    fun showLoadingPage(message: String) = _pageState.update { PageState.Loading(message) }
+    fun showUIPage(block: STATE.() -> STATE) {
+        _pageState.update {
+            _uiState = block(_uiState)
+            PageState.Loaded(_uiState)
         }
     }
+
+    fun showErrorPage(errorMessage: String) = _pageState.update { PageState.Error(errorMessage) }
 
     private val _effect: MutableSharedFlow<EFFECT>
         get() = MutableSharedFlow()

@@ -45,7 +45,7 @@ object Ktor {
                         Log.v(TAG_KTOR_LOGGER, message)
                     }
                 }
-                level = LogLevel.INFO
+                level = LogLevel.BODY
             }
 
             install(DefaultRequest) {
