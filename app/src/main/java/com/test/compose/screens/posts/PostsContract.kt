@@ -1,7 +1,6 @@
 package com.test.compose.screens.posts
 
 import com.test.compose.common.ComposeContract
-import com.test.compose.common.ScreenState
 
 interface PostsContract : ComposeContract<PostsContract.UiState, PostsContract.Effect> {
 
@@ -15,5 +14,6 @@ interface PostsContract : ComposeContract<PostsContract.UiState, PostsContract.E
     sealed class Effect {
         object OnBackPressed : Effect()
         data class ShowToast(val message: String) : Effect()
+        data class showDialog(val title: String, val msg: String): Effect()
     }
 }

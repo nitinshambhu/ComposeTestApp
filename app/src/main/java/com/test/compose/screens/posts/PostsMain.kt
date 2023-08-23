@@ -15,7 +15,10 @@ fun PostsMain(viewModel: PostsViewModel = koinViewModel()) {
 
     LaunchOnlyOnce {
         launch {
-//            viewModel.collectSideEffect {}
+            viewModel.collectSideEffect {
+
+
+            }
         }
         viewModel.fetchPosts()
     }
@@ -23,7 +26,7 @@ fun PostsMain(viewModel: PostsViewModel = koinViewModel()) {
     Log.e("TINTIN", "state = $state")
     when  {
         state.isLoading -> LoadingScreen(state.loadingMessage)
-        state.errorMessage.isNotBlank() -> ErrorScreen(state.errorMessage)
+        state.posts.isEmpty() -> ErrorScreen(state.errorMessage)
         else -> PostListScreen(state.posts)
     }
 }
